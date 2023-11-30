@@ -12,4 +12,11 @@ export interface Products{
 
 }
 
-//? is used to make the property optional
+export interface ProductParams{
+        orderBy: string;
+        searchTerm?: string;
+        types : string[];
+        brands : string[];
+        pageNumber: number;
+        pageSize: number;
+}
