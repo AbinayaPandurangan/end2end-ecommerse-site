@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { accountSlice } from "../../feature/account/AccountSlice";
 import { basketSlice } from "../../feature/basket/basketSlice";
 import { catalogSlice } from "../../feature/catalog/catalogSlice";
 
@@ -13,7 +14,8 @@ export const store = configureStore({
     reducer:
     {counter: counterSlice.reducer,
     basket: basketSlice.reducer,
-    catalog: catalogSlice.reducer}
+    catalog: catalogSlice.reducer,
+    account: accountSlice.reducer}
 })
 
 export type RootState = ReturnType<typeof store.getState>
