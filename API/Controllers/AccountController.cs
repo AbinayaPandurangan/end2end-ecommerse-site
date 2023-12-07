@@ -96,5 +96,17 @@ namespace API.Controllers
                         .ThenInclude(p => p.Product)
                         .FirstOrDefaultAsync(x => x.BuyerId == buyerId);
         }
+
+        [Authorize]
+        [HttpGet("getSavedAddress")]
+        public async Task<ActionResult<UserAddress>> GetSavedAddress()
+        {
+            return await _userManager.Users
+            .Where(x => x.UserName == User.Identity.Name)
+            .Select(user => user.Address)
+            .FirstOrDefaultAsync();
+
+        }
+        
     }
 }
