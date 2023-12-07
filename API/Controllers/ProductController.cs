@@ -9,7 +9,6 @@ using System.Text.Json;
 namespace API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
 
 public class ProductController : BaseApiController
 {

@@ -50,7 +50,7 @@ async function submitForm (data: FieldValues){
               autoFocus
               {...register('username', {required: 'Username is required'})}
               error={!!errors.username}
-              helperText={errors?.username?.message}
+              helperText={errors?.username?.message as string}
             />
             <TextField
               margin="normal"
@@ -59,7 +59,7 @@ async function submitForm (data: FieldValues){
               label="Password"
               type="password"
               error={!!errors.password}
-              helperText={errors?.password?.message}
+              helperText={errors?.password?.message as string}
             />
            
             <LoadingButton loading={isSubmitting}

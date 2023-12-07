@@ -7,7 +7,6 @@ import Catalog from "../../../feature/catalog/Catalog";
 import ProductDetails from "../../../feature/catalog/ProductDetails";
 import CheckoutPage from "../../../feature/checkout/CheckoutPage";
 import Contact from "../../../feature/contact/Contact";
-import HomePage from "../../../feature/Homepage";
 import Orders from "../../../feature/orders/Orders";
 import OrderDetails from "../../../feature/orders/OrderDetails";
 import Notfound from "../../errors/NotFound";
@@ -26,7 +25,6 @@ export const router = createBrowserRouter([
                 {path: 'orders', element:<Orders/> },
                 {path: 'orders/:id', element:<OrderDetails/> }
             ]},
-            {path: '', element:<HomePage/> },
             {path: 'catalog', element:<Catalog/> },
             {path: 'catalog/:id', element:<ProductDetails/> },
             {path: 'about', element:<About/> },

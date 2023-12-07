@@ -4,7 +4,7 @@ import { router } from "../layout/router/Routes";
 import { PaginatedResponse } from "../models/Pagination";
 import { store } from "../store/configureStore";
 
-axios.defaults.baseURL = "http://localhost:5000/";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 function responseBody(response: AxiosResponse) {
@@ -20,7 +20,7 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(async response => {
-    await sleep();
+    if (import.meta.env.DEV) await sleep();
     const pagination = response.headers['pagination'];
     if(pagination){
         response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
@@ -45,6 +45,9 @@ axios.interceptors.response.use(async response => {
         case 401:
             toast.error(data.title);
             break;
+            case 404:
+                toast.error(data.title);
+                break;
         case 500:
             router.navigate('/server-error', {state: {error: data}})
             break;
@@ -69,30 +72,30 @@ const catalog = {
 }
 
 const TestError = {
-    get400Error: () => requests.get('api/Buggy/bad-request'),
-    get401Error: () => requests.get('api/Buggy/unauthorised'),
-    get404Error: () => requests.get('api/Buggy/not-found'),
-    get500Error: () => requests.get('api/Buggy/server-error'),
-    getValidationError: () => requests.get('api/Buggy/validation-error'),
+    get400Error: () => requests.get('Buggy/bad-request'),
+    get401Error: () => requests.get('Buggy/unauthorised'),
+    get404Error: () => requests.get('Buggy/not-found'),
+    get500Error: () => requests.get('Buggy/server-error'),
+    getValidationError: () => requests.get('Buggy/validation-error'),
 }
 
 const Basket = {
-    get: () => requests.get('/api/Basket'),
-    addItem: (productId: number, quantity = 1) => requests.post(`/api/Basket?productId=${productId}&quantity=${quantity}`, {}),
-    removeItem: (productId: number, quantity =1) => requests.delete(`/api/Basket?productId=${productId}&quantity=${quantity}`)
+    get: () => requests.get('Basket'),
+    addItem: (productId: number, quantity = 1) => requests.post(`Basket?productId=${productId}&quantity=${quantity}`, {}),
+    removeItem: (productId: number, quantity =1) => requests.delete(`Basket?productId=${productId}&quantity=${quantity}`)
 }
 
 const Account = {
-    login: (values: any) => requests.post('api/Account/login', values),
-    register: (values: any) => requests.post('api/Account/register', values),
-    currentUser: () => requests.get('api/Account/currentUser')
+    login: (values: any) => requests.post('Account/login', values),
+    register: (values: any) => requests.post('Account/register', values),
+    currentUser: () => requests.get('Account/currentUser')
 }
 
 const Orders ={
-    list: () => requests.get('api/Orders'),
-    fetch: (id: number) => requests.get(`api/Orders/${id}`),
-    create: (values: any) => requests.post('api/Orders', values),
-    fetchAddress: () => requests.get('api/Account/getSavedAddress')
+    list: () => requests.get('Orders'),
+    fetch: (id: number) => requests.get(`Orders/${id}`),
+    create: (values: any) => requests.post('Orders', values),
+    fetchAddress: () => requests.get('Account/getSavedAddress')
 }
 
 const agent = {
