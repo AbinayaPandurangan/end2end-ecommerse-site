@@ -2,7 +2,6 @@ using System.Text;
 using API.Data;
 using API.Enitities;
 using API.Middleware;
-using API.RequestHelpers;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -18,12 +17,12 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c=> 
+builder.Services.AddSwaggerGen(c =>
 {
     var jwtSecurityScheme = new OpenApiSecurityScheme
     {
-        BearerFormat ="JWT",
-        Name="Authorization",
+        BearerFormat = "JWT",
+        Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = JwtBearerDefaults.AuthenticationScheme,
@@ -46,8 +45,13 @@ builder.Services.AddSwaggerGen(c=>
 
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// builder.Services.AddDbContext<StoreContext>(opt =>
+// {
+//     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+// });
 
 
 builder.Services.AddCors();
@@ -79,14 +83,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
+
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => 
-    {
-        c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
-    });
-}
+    c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
+    // c.RoutePrefix = string.Empty;
+});
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
